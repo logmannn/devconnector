@@ -5,20 +5,25 @@ const isFalseOrEmpty = require("./is-false-or-empty");
 module.exports = function validateExperienceInput(data) {
   let errors = {};
 
-  data.title = !isEmpty(data.title) ? data.title : "";
-  data.company = !isEmpty(data.company) ? data.company : "";
+  data.school = !isEmpty(data.school) ? data.school : "";
+  data.degree = !isEmpty(data.degree) ? data.degree : "";
+  data.fieldofstudy = !isEmpty(data.fieldofstudy) ? data.fieldofstudy : "";
   data.from = !isEmpty(data.from) ? data.from : "";
 
-  if (Validator.isEmpty(data.title)) {
-    errors.title = "Job title field is required";
+  if (Validator.isEmpty(data.school)) {
+    errors.school = "School field is required";
   }
 
-  if (Validator.isEmpty(data.company)) {
-    errors.company = "Company field is required";
+  if (Validator.isEmpty(data.degree)) {
+    errors.degree = "Degree field is required";
   }
 
   if (Validator.isEmpty(data.from)) {
     errors.from = "From date field is required";
+  }
+
+  if (Validator.isEmpty(data.fieldofstudy)) {
+    errors.fieldofstudy = "Field of study field is required";
   }
 
   if (isFalseOrEmpty(data.current) && isFalseOrEmpty(data.to)) {
