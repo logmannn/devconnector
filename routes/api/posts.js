@@ -92,8 +92,6 @@ router.post(
         }
 
         if (post) {
-          console.log(req.user.id);
-          console.log(req.params.id);
           Post.findOneAndUpdate(
             { _id: req.params.id },
             { $set: { text: req.body.text } },
