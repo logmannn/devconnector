@@ -13,6 +13,7 @@ import Footer from "./components/layout/Footer";
 import Landing from "./components/layout/Landing";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
+import { clearCurrentProfile } from "./actions/profileActions";
 
 // Check for token
 if (localStorage.jwtToken) {
@@ -29,8 +30,7 @@ if (localStorage.jwtToken) {
     // Logout User
     store.dispatch(logoutUser());
     // Clear current Profile
-    // TODO: Clear current Profile
-
+    store.dispatch(clearCurrentProfile());
     // Redirect to login
     window.location.href = "/login";
   }
