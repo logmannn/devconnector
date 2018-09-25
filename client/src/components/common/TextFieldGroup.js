@@ -6,12 +6,12 @@ const TextFieldGroup = ({
   name,
   placeholder,
   value,
-  label,
   error,
   info,
   type,
   onChange,
-  disabled
+  disabled,
+  defaultValue
 }) => {
   return (
     <div className="form-group">

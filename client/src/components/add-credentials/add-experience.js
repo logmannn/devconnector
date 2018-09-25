@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { withRouter, Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import TextFieldGroup from "../common/TextFieldGroup";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import { connect } from "react-redux";
-import propTypes from "prop-types";
+import PropTypes from "prop-types";
 import { addExperience } from "../../actions/profileActions";
 
 class AddExperience extends Component {
@@ -20,6 +20,10 @@ class AddExperience extends Component {
       errors: {},
       disabled: false
     };
+
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.onCheck = this.onCheck.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -28,7 +32,7 @@ class AddExperience extends Component {
     }
   }
 
-  onSubmit = e => {
+  onSubmit(e) {
     e.preventDefault();
 
     const expData = {
@@ -42,18 +46,18 @@ class AddExperience extends Component {
     };
 
     this.props.addExperience(expData, this.props.history);
-  };
+  }
 
-  onChange = e => {
+  onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
-  };
+  }
 
-  onCheck = e => {
+  onCheck(e) {
     this.setState({
       disabled: !this.state.disabled,
       current: !this.state.current
     });
-  };
+  }
 
   render() {
     const { errors } = this.state;
@@ -62,7 +66,7 @@ class AddExperience extends Component {
       <div className="add-experience">
         <div className="container">
           <div className="row">
-            <div className="col-md 8 m-auto">
+            <div className="col-md-8 m-auto">
               <Link to="/dashboard" className="btn btn-light">
                 Go Back
               </Link>
@@ -70,7 +74,7 @@ class AddExperience extends Component {
               <p className="lead text-center">
                 Add any job or position that you have had in the past or current
               </p>
-              <small className="d-block pb3">* = required fields</small>
+              <small className="d-block pb-3">* = required fields</small>
               <form onSubmit={this.onSubmit}>
                 <TextFieldGroup
                   placeholder="* Company"
@@ -130,7 +134,7 @@ class AddExperience extends Component {
                   value={this.state.description}
                   onChange={this.onChange}
                   error={errors.description}
-                  info="Tell us about the the position"
+                  info="Tell us about the position"
                 />
                 <input
                   type="submit"
@@ -147,9 +151,9 @@ class AddExperience extends Component {
 }
 
 AddExperience.propTypes = {
-  addExperience: propTypes.func.isRequired,
-  errors: propTypes.object.isRequired,
-  profile: propTypes.object.isRequired
+  addExperience: PropTypes.func.isRequired,
+  profile: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({

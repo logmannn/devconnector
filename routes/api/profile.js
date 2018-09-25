@@ -3,6 +3,8 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const passport = require("passport");
 
+mongoose.set("debug", true);
+
 // Load Validation
 const validateProfileInput = require("../../validation/profile");
 const validateExperienceInput = require("../../validation/experience");
@@ -172,7 +174,8 @@ router.post(
   (req, res) => {
     const { errors, isValid } = validateExperienceInput(req.body);
 
-    // Check Validation
+    // Check ValidationvalidateExperienceInput
+
     if (!isValid) {
       // Return any errors with 400 status
       return res.status(400).json(errors);
@@ -197,6 +200,42 @@ router.post(
   }
 );
 
+// @route   POST api/profile/experience/:id
+// @desc    Update an experience
+// @access  Private
+router.post(
+  "/experience/:exp_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { errors, isValid } = validateExperienceInput(req.body);
+
+    if (!isValid) {
+      // Return any errors with 400 status
+      return res.status(400).json(errors);
+    }
+
+    Profile.findOne({ user: req.user.id })
+      .then(profile => {
+        const itemNumber = profile.experience
+          .map(item => item.id)
+          .indexOf(req.params.exp_id);
+
+        let itemToUpdate = profile.experience[itemNumber];
+
+        itemToUpdate.title = req.body.title;
+        itemToUpdate.company = req.body.company;
+        itemToUpdate.location = req.body.location;
+        itemToUpdate.from = req.body.from;
+        itemToUpdate.to = req.body.to;
+        itemToUpdate.description = req.body.description;
+        itemToUpdate.current = req.body.current;
+
+        profile.save().then(profile => res.json(profile));
+      })
+      .catch(err => res.status(404).json(err));
+  }
+);
+
 // @route   POST api/profile/education
 // @desc    Add education to profile
 // @access  Private
@@ -212,22 +251,24 @@ router.post(
       return res.status(400).json(errors);
     }
 
-    Profile.findOne({ user: req.user.id }).then(profile => {
-      const newEdu = {
-        school: req.body.school,
-        degree: req.body.degree,
-        fieldofstudy: req.body.fieldofstudy,
-        from: req.body.from,
-        to: req.body.to,
-        current: req.body.current,
-        description: req.body.description
-      };
+    Profile.findOne({ user: req.user.id })
+      .then(profile => {
+        const newEdu = {
+          school: req.body.school,
+          degree: req.body.degree,
+          fieldofstudy: req.body.fieldofstudy,
+          from: req.body.from,
+          to: req.body.to,
+          current: req.body.current,
+          description: req.body.description
+        };
 
-      // Add to edu array
-      profile.education.unshift(newEdu);
+        // Add to edu array
+        profile.education.unshift(newEdu);
 
-      profile.save().then(profile => res.json(profile));
-    });
+        profile.save().then(profile => res.json(profile));
+      })
+      .catch(err => res.status(404).json(err));
   }
 );
 

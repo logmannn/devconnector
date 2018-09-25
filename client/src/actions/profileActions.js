@@ -76,10 +76,34 @@ export const addExperience = (expData, history) => dispatch => {
     );
 };
 
+// Add education
 export const addEducation = (eduData, history) => dispatch => {
   axios
     .post("/api/profile/education", eduData)
     .then(res => history.push("/dashboard"))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+// Update Experience
+export const updateExperience = (expData, id) => dispatch => {
+  axios
+    .post(`/api/profile/experience/${id}`, expData)
+    .then(
+      res =>
+        dispatch({
+          type: GET_PROFILE,
+          payload: res.data
+        }),
+      dispatch({
+        type: CLEAR_ERRORS,
+        payload: {}
+      })
+    )
     .catch(err =>
       dispatch({
         type: GET_ERRORS,

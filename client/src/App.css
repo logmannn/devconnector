@@ -37,3 +37,31 @@ img {
 .form-control::placeholder {
   color: #bbb !important;
 }
+
+.evenly-space {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.space {
+  width: 100%;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.form-box {
+  max-height: 100px;
+  height: 100%;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.center {
+  text-align: center;
+}
+
+.border {
+  border: 1px solid black;
+}
