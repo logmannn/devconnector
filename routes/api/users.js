@@ -96,7 +96,7 @@ router.post("/login", (req, res) => {
           avatar: user.avatar
         }; // create jwt payload
 
-        // sign token
+        // sign token expires
         jwt.sign(
           payload,
           keys.secretOrKey,

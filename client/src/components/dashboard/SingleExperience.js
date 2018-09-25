@@ -5,7 +5,10 @@ import Fragment from "render-fragment";
 import TextFieldGroup from "../common/TextFieldGroup";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import { withRouter } from "react-router-dom";
-import { updateExperience } from "../../actions/profileActions";
+import {
+  updateExperience,
+  getCurrentProfile
+} from "../../actions/profileActions";
 import isFalseOrEmpty from "../../validation/is-false-or-empty";
 import PropTypes from "prop-types";
 
@@ -247,5 +250,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { updateExperience }
+  { updateExperience, getCurrentProfile }
 )(withRouter(SingleExperience));

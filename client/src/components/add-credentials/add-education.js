@@ -4,7 +4,7 @@ import TextFieldGroup from "../common/TextFieldGroup";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import { connect } from "react-redux";
 import propTypes from "prop-types";
-import { addEducation } from "../../actions/profileActions";
+import { addEducation, getCurrentProfile } from "../../actions/profileActions";
 
 class AddEducation extends Component {
   constructor(props) {
@@ -20,6 +20,10 @@ class AddEducation extends Component {
       errors: {},
       disabled: false
     };
+  }
+
+  componentDidMount() {
+    this.props.getCurrentProfile();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -159,5 +163,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { addEducation }
+  { addEducation, getCurrentProfile }
 )(withRouter(AddEducation));

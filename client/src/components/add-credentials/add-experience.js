@@ -4,7 +4,7 @@ import TextFieldGroup from "../common/TextFieldGroup";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { addExperience } from "../../actions/profileActions";
+import { addExperience, getCurrentProfile } from "../../actions/profileActions";
 
 class AddExperience extends Component {
   constructor(props) {
@@ -24,6 +24,10 @@ class AddExperience extends Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onCheck = this.onCheck.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.getCurrentProfile();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -163,5 +167,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { addExperience }
+  { addExperience, getCurrentProfile }
 )(withRouter(AddExperience));
