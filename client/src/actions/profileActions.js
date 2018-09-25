@@ -1,11 +1,15 @@
 import axios from "axios";
+import { logoutUser } from "./authActions";
+import store from "../store";
 
 import {
   GET_PROFILE,
+  GET_PROFILES,
   PROFILE_LOADING,
   CLEAR_CURRENT_PROFILE,
   GET_ERRORS,
-  SET_CURRENT_USER
+  SET_CURRENT_USER,
+  CLEAR_ERRORS
 } from "./types";
 
 // Get current profile
@@ -13,18 +17,24 @@ export const getCurrentProfile = () => dispatch => {
   dispatch(setProfileLoading());
   axios
     .get("/api/profile")
-    .then(res =>
+    .then(res => {
       dispatch({
         type: GET_PROFILE,
         payload: res.data
-      })
-    )
-    .catch(err =>
-      dispatch({
-        type: GET_PROFILE,
-        payload: {}
-      })
-    );
+      });
+    })
+    .catch(err => {
+      if (err.response.status === 401) {
+        store.dispatch(logoutUser());
+        store.dispatch(clearCurrentProfile());
+        window.location.href = "/login";
+      } else {
+        dispatch({
+          type: GET_PROFILE,
+          payload: {}
+        });
+      }
+    });
 };
 
 // Create Profile
@@ -36,6 +46,44 @@ export const createProfile = (profileData, history) => dispatch => {
       dispatch({
         type: GET_ERRORS,
         payload: err.response.data
+      })
+    );
+};
+
+// Get profile by handle
+export const getProfileByHandle = handle => dispatch => {
+  dispatch(setProfileLoading());
+  axios
+    .get(`/api/profile/handle/${handle}`)
+    .then(res =>
+      dispatch({
+        type: GET_PROFILE,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_PROFILE,
+        payload: null
+      })
+    );
+};
+
+// Get all profiles
+export const getProfiles = () => dispatch => {
+  dispatch(setProfileLoading());
+  axios
+    .get("/api/profile/all")
+    .then(res =>
+      dispatch({
+        type: GET_PROFILES,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_PROFILES,
+        payload: null
       })
     );
 };
@@ -104,12 +152,18 @@ export const updateExperience = (expData, id) => dispatch => {
         payload: {}
       })
     )
-    .catch(err =>
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
-      })
-    );
+    .catch(err => {
+      if (err.response.status === 401) {
+        store.dispatch(logoutUser());
+        store.dispatch(clearCurrentProfile());
+        window.location.href = "/login";
+      } else {
+        dispatch({
+          type: GET_ERRORS,
+          payload: err.response.data
+        });
+      }
+    });
 };
 
 // Delete experience
@@ -123,12 +177,44 @@ export const deleteExperience = id => dispatch => {
           payload: res.data
         })
       )
-      .catch(err =>
+      .catch(err => {
+        if (err.response.status === 401) {
+          store.dispatch(logoutUser());
+          store.dispatch(clearCurrentProfile());
+          window.location.href = "/login";
+        } else {
+          dispatch({
+            type: GET_ERRORS,
+            payload: err.response.data
+          });
+        }
+      });
+  }
+};
+
+// Delete education
+export const deleteEducation = id => dispatch => {
+  if (window.confirm("Are you sure? This can not be undone")) {
+    axios
+      .delete(`/api/profile/education/${id}`)
+      .then(res =>
         dispatch({
-          type: GET_ERRORS,
-          payload: err.response.data
+          type: GET_PROFILE,
+          payload: res.data
         })
-      );
+      )
+      .catch(err => {
+        if (err.response.status === 401) {
+          store.dispatch(logoutUser());
+          store.dispatch(clearCurrentProfile());
+          window.location.href = "/login";
+        } else {
+          dispatch({
+            type: GET_ERRORS,
+            payload: err.response.data
+          });
+        }
+      });
   }
 };
 
