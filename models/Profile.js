@@ -45,6 +45,9 @@ const ProfileSchema = new Schema({
         type: String,
         required: true
       },
+      location: {
+        type: String
+      },
       from: {
         type: Date,
         required: true
@@ -66,6 +69,9 @@ const ProfileSchema = new Schema({
       school: {
         type: String,
         required: true
+      },
+      location: {
+        type: String
       },
       degree: {
         type: String,
