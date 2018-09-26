@@ -3,12 +3,15 @@ import {
   GET_POSTS,
   GET_POST,
   DELETE_POST,
-  POST_LOADING
+  POST_LOADING,
+  LIKE_POST,
+  DISLIKE_POST
 } from "../actions/types";
 
 const initialState = {
   posts: [],
   post: {},
+  auth: {},
   loading: false
 };
 
@@ -40,6 +43,24 @@ export default function(state = initialState, action) {
       return {
         ...state,
         posts: state.posts.filter(post => post._id !== action.payload)
+      };
+    case LIKE_POST:
+      state.posts
+        .filter(post => post._id === action.payload.id)[0]
+        .likes.push({ _id: "1234", user: action.payload.auth.user.id });
+      return {
+        ...state,
+        posts: state.posts
+      };
+    case DISLIKE_POST:
+      state.posts[
+        state.posts.findIndex(post => post._id === action.payload.id)
+      ].likes = state.posts[
+        state.posts.findIndex(post => post._id === action.payload.id)
+      ].likes.filter(like => like._id !== "1234");
+      return {
+        ...state,
+        posts: state.posts
       };
     default:
       return state;
