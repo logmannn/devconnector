@@ -139,17 +139,13 @@ export const addEducation = (eduData, history) => dispatch => {
 
 // Update Experience
 export const updateExperience = (expData, id) => dispatch => {
+  dispatch(clearErrors());
   axios
     .post(`/api/profile/experience/${id}`, expData)
-    .then(
-      res =>
-        dispatch({
-          type: GET_PROFILE,
-          payload: res.data
-        }),
+    .then(res =>
       dispatch({
-        type: CLEAR_ERRORS,
-        payload: {}
+        type: GET_PROFILE,
+        payload: res.data
       })
     )
     .catch(err => {
@@ -229,5 +225,12 @@ export const setProfileLoading = () => {
 export const clearCurrentProfile = () => {
   return {
     type: CLEAR_CURRENT_PROFILE
+  };
+};
+
+// Clear errors
+export const clearErrors = () => {
+  return {
+    type: CLEAR_ERRORS
   };
 };
