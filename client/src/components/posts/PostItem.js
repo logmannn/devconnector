@@ -18,8 +18,6 @@ class PostItem extends Component {
   componentDidMount() {
     const { post, auth } = this.props;
 
-    let likeState = false;
-
     if (post.likes.filter(like => like.user === auth.user.id).length > 0) {
       this.setState({
         didLike: true
@@ -53,9 +51,9 @@ class PostItem extends Component {
   }
 
   onUnlikeClick(id, auth, likes) {
-    const { didLike } = this.state;
-    if (this.state.didLike) {
-      this.setState({ likeCount: this.state.likeCount - 1, didLike: false });
+    const { didLike, likeCount } = this.state;
+    if (didLike) {
+      this.setState({ likeCount: likeCount - 1, didLike: false });
       this.props.removeLike(id);
     }
   }

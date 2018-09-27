@@ -10,11 +10,14 @@ import {
   POST_LOADING,
   DELETE_POST,
   LIKE_POST,
-  DISLIKE_POST
+  DISLIKE_POST,
+  GET_POST,
+  CLEAR_ERRORS
 } from "./types";
 
 // Add Post
 export const addPost = postData => dispatch => {
+  dispatch(clearErrors());
   axios
     .post("/api/posts", postData)
     .then(res =>
@@ -56,6 +59,31 @@ export const getPosts = () => dispatch => {
       } else {
         dispatch({
           type: GET_POSTS,
+          payload: null
+        });
+      }
+    });
+};
+
+// Get Post
+export const getPost = id => dispatch => {
+  dispatch(setPostLoading());
+  axios
+    .get(`/api/posts/${id}`)
+    .then(res =>
+      dispatch({
+        type: GET_POST,
+        payload: res.data
+      })
+    )
+    .catch(err => {
+      if (err.response.status === 401) {
+        store.dispatch(logoutUser());
+        store.dispatch(clearCurrentProfile());
+        window.location.href = "/login";
+      } else {
+        dispatch({
+          type: GET_POST,
           payload: null
         });
       }
@@ -143,9 +171,67 @@ export const removeLike = (id, auth) => dispatch => {
     });
 };
 
+// Add Comment
+export const addComment = (postId, commentData) => dispatch => {
+  dispatch(clearErrors());
+  axios
+    .post(`/api/posts/comment/${postId}`, commentData)
+    .then(res =>
+      dispatch({
+        type: GET_POST,
+        payload: res.data
+      })
+    )
+    .catch(err => {
+      if (err.response.status === 401) {
+        store.dispatch(logoutUser());
+        store.dispatch(clearCurrentProfile());
+        window.location.href = "/login";
+      } else {
+        dispatch({
+          type: GET_ERRORS,
+          payload: err.response.data
+        });
+      }
+    });
+};
+
+// Delete Comment
+export const deleteComment = (postId, commentId) => dispatch => {
+  if (window.confirm("Are you sure? This can not be undone")) {
+    axios
+      .delete(`/api/posts/comment/${postId}/${commentId}`)
+      .then(res =>
+        dispatch({
+          type: GET_POST,
+          payload: res.data
+        })
+      )
+      .catch(err => {
+        if (err.response.status === 401) {
+          store.dispatch(logoutUser());
+          store.dispatch(clearCurrentProfile());
+          window.location.href = "/login";
+        } else {
+          dispatch({
+            type: GET_ERRORS,
+            payload: err.response.data
+          });
+        }
+      });
+  }
+};
+
 // Set Loading state
 export const setPostLoading = () => {
   return {
     type: POST_LOADING
+  };
+};
+
+// Clear errors
+export const clearErrors = () => {
+  return {
+    type: CLEAR_ERRORS
   };
 };
