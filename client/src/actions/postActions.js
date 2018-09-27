@@ -64,26 +64,28 @@ export const getPosts = () => dispatch => {
 
 // Delete Post
 export const deletePost = id => dispatch => {
-  axios
-    .delete(`/api/posts/${id}`)
-    .then(res =>
-      dispatch({
-        type: DELETE_POST,
-        payload: id
-      })
-    )
-    .catch(err => {
-      if (err.response.status === 401) {
-        store.dispatch(logoutUser());
-        store.dispatch(clearCurrentProfile());
-        window.location.href = "/login";
-      } else {
+  if (window.confirm("Are you sure? This can not be undone")) {
+    axios
+      .delete(`/api/posts/${id}`)
+      .then(res =>
         dispatch({
-          type: GET_ERRORS,
-          payload: err.response.data
-        });
-      }
-    });
+          type: DELETE_POST,
+          payload: id
+        })
+      )
+      .catch(err => {
+        if (err.response.status === 401) {
+          store.dispatch(logoutUser());
+          store.dispatch(clearCurrentProfile());
+          window.location.href = "/login";
+        } else {
+          dispatch({
+            type: GET_ERRORS,
+            payload: err.response.data
+          });
+        }
+      });
+  }
 };
 
 // Add Like
