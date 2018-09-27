@@ -21,12 +21,13 @@ class PostItem extends Component {
     let likeState = false;
 
     if (post.likes.filter(like => like.user === auth.user.id).length > 0) {
-      likeState = true;
+      this.setState({
+        didLike: true
+      });
     }
 
     this.setState({
-      likeCount: post.likes.length,
-      didLike: likeState
+      likeCount: post.likes.length
     });
   }
 
@@ -35,26 +36,28 @@ class PostItem extends Component {
   }
 
   onLikeClick(id, auth, likes) {
-    const { didLike } = this.state;
-    // if (!likes.filter(like => like.user === auth.user.id).length > 0) {
+    const { likeCount } = this.state;
     if (!this.state.didLike) {
-      this.setState({ likeCount: this.state.likeCount + 1, didLike: true });
+      this.setState({
+        likeCount: likeCount + 1,
+        didLike: true
+      });
       this.props.addLike(id, auth);
     } else {
-      this.setState({ likeCount: this.state.likeCount - 1, didLike: false });
+      this.setState({
+        likeCount: likeCount - 1,
+        didLike: false
+      });
       this.props.removeLike(id);
     }
-    // }
   }
 
   onUnlikeClick(id, auth, likes) {
     const { didLike } = this.state;
-    // if (likes.filter(like => like.user === auth.user.id).length > 0) {
     if (this.state.didLike) {
       this.setState({ likeCount: this.state.likeCount - 1, didLike: false });
       this.props.removeLike(id);
     }
-    // }
   }
 
   findUserLike(likes) {
@@ -73,16 +76,6 @@ class PostItem extends Component {
   render() {
     const { auth, post } = this.props;
 
-    const didUserLike = this.state.didLike;
-
-    let conditionalLike;
-
-    if (didUserLike) {
-      conditionalLike = true;
-    } else {
-      conditionalLike = false;
-    }
-
     return (
       <div className="card card-body mb-3">
         <div className="row">
@@ -99,7 +92,6 @@ class PostItem extends Component {
           </div>
           <div className="col-md-10">
             <p className="lead">{post.text}</p>
-            {/* {showActions ? ( */}
             <span>
               <button
                 onClick={this.onLikeClick.bind(
@@ -129,7 +121,6 @@ class PostItem extends Component {
                 </button>
               ) : null}
             </span>
-            {/* } */}
           </div>
         </div>
       </div>
