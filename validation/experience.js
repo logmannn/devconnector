@@ -9,26 +9,23 @@ module.exports = function validateExperienceInput(data) {
   data.from = !isEmpty(data.from) ? data.from : "";
 
   let [title, company, location, from, to, description, current] = [];
-
   let id = data.id;
 
-  let toTest = data.to.replace("T00:00:00.000Z", "");
-  let fromTest = data.from.replace("T00:00:00.000Z", "");
-  if (
-    fromTest
-      .match(/^(.*?)$/)[0]
-      .replace(/(.*?)-/, "")
-      .replace(/(.*?)-/, "") >
-      toTest
-        .match(/^(.*?)$/)[0]
-        .replace(/(.*?)-/, "")
-        .replace(/(.*?)-/, "") ||
-    parseInt(fromTest.match(/(.*?)-/g)[1].replace("-", "")) >
-      parseInt(toTest.match(/(.*?)-/g)[1].replace("-", "")) ||
-    parseInt(fromTest.match(/(.*?)-/g)[0].replace("-", "")) >
-      parseInt(toTest.match(/(.*?)-/g)[0].replace("-", ""))
-  ) {
-    to = "From field must be before To field";
+  let toTest = new Date(data.to.replace("T00:00:00.000Z", ""));
+  let fromTest = new Date(data.from.replace("T00:00:00.000Z", ""));
+
+  if (!data.current) {
+    if (fromTest > toTest) {
+      to = "From field must be before To field";
+    }
+  }
+
+  if (toTest > new Date()) {
+    to = "To field must not be in the future";
+  }
+
+  if (fromTest > new Date()) {
+    from = "From field must not be in the future";
   }
 
   if (Validator.isEmpty(data.title)) {

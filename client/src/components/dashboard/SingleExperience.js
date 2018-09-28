@@ -231,7 +231,7 @@ class SingleExperience extends Component {
             {!editMode ? (
               <Fragment>
                 {moment.utc(this.state.from).format("MM/DD/YYYY")} -{" "}
-                {this.state.to
+                {this.state.to && !this.state.current
                   ? moment.utc(this.state.to).format("MM/DD/YYYY")
                   : " Current"}
               </Fragment>
