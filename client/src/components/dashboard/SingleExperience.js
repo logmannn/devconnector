@@ -15,6 +15,8 @@ import PropTypes from "prop-types";
 const Form = styled.form`
   margin-bottom: 1rem;
   margin-top: 1rem;
+  border-top: 1px solid #6c757d;
+  padding-top: 1rem;
 `;
 
 class SingleExperience extends Component {
@@ -30,7 +32,15 @@ class SingleExperience extends Component {
       description: "",
       errors: {},
       disabled: false,
-      editMode: false
+      editMode: false,
+      companyEdit: "",
+      titleEdit: "",
+      locationEdit: "",
+      fromEdit: "",
+      toEdit: "",
+      currentEdit: "",
+      descriptionEdit: "",
+      id: 0
     };
   }
 
@@ -42,7 +52,8 @@ class SingleExperience extends Component {
       from: this.props.exp.from,
       to: this.props.exp.to,
       current: this.props.exp.current,
-      description: this.props.exp.description
+      description: this.props.exp.description,
+      id: this.props.exp._id
     });
   }
 
@@ -52,7 +63,26 @@ class SingleExperience extends Component {
 
   onEditClick = id => {
     this.setState({
-      editMode: !this.state.editMode
+      editMode: !this.state.editMode,
+      companyEdit: this.state.company,
+      titleEdit: this.state.title,
+      locationEdit: this.state.location,
+      fromEdit: this.state.from,
+      toEdit: this.state.to,
+      currentEdit: this.state.current,
+      descriptionEdit: this.state.description
+    });
+  };
+  onCancelClick = id => {
+    this.setState({
+      editMode: !this.state.editMode,
+      company: this.state.companyEdit,
+      title: this.state.titleEdit,
+      location: this.state.locationEdit,
+      from: this.state.fromEdit,
+      to: this.state.toEdit,
+      current: this.state.currentEdit,
+      description: this.state.descriptionEdit
     });
   };
 
@@ -71,7 +101,19 @@ class SingleExperience extends Component {
   };
 
   onUpdate = id => {
-    const { exp, updateExperience } = this.props;
+    const { exp, updateExperience, errors } = this.props;
+
+    this.setState({
+      editMode: !this.state.editMode,
+      companyEdit: this.state.company,
+      titleEdit: this.state.title,
+      locationEdit: this.state.location,
+      fromEdit: this.state.from,
+      toEdit: this.state.to,
+      currentEdit: this.state.current,
+      descriptionEdit: this.state.description,
+      errors: {}
+    });
 
     const expData = {
       company: this.state.company,
@@ -80,27 +122,42 @@ class SingleExperience extends Component {
       from: this.state.from,
       to: this.state.to,
       current: this.state.current,
-      description: this.state.description
+      description: this.state.description,
+      id: id
     };
 
     updateExperience(expData, exp._id);
   };
 
   componentWillReceiveProps(nextProps) {
-    if (Object.keys(nextProps.errors).length === 0) {
-      this.setState({
-        editMode: false
-      });
-    } else {
-      this.setState({
-        editMode: true
-      });
+    if (typeof nextProps.errors[nextProps.exp._id] !== "undefined") {
+      if (Object.keys(nextProps.errors[nextProps.exp._id]).length === 0) {
+        this.setState({
+          editMode: false
+        });
+      } else {
+        this.setState({
+          editMode: true
+        });
+        this.setState({
+          errors: {
+            company: nextProps.errors[nextProps.exp._id].company,
+            title: nextProps.errors[nextProps.exp._id].title,
+            location: nextProps.errors[nextProps.exp._id].location,
+            from: nextProps.errors[nextProps.exp._id].from,
+            to: nextProps.errors[nextProps.exp._id].to,
+            current: nextProps.errors[nextProps.exp._id].current,
+            description: nextProps.errors[nextProps.exp._id].description,
+            id: nextProps.errors[nextProps.exp._id].id
+          }
+        });
+      }
     }
   }
 
   render() {
-    const { exp, errors } = this.props;
-    const { disabled, editMode } = this.state;
+    const { exp } = this.props;
+    const { disabled, editMode, errors } = this.state;
 
     const actionButtons = (
       <div className="space center">
@@ -129,7 +186,7 @@ class SingleExperience extends Component {
             </button>
             <button
               className="btn btn-danger"
-              onClick={this.onEditClick.bind(this, exp._id)}
+              onClick={this.onCancelClick.bind(this, exp._id)}
             >
               Cancel
             </button>
@@ -245,9 +302,8 @@ class SingleExperience extends Component {
             )}
           </div>
           <div />
-          <div className="hide-when-tablet space">{actionButtons}</div>
         </div>
-        <div className="hide-when-desktop">{actionButtons}</div>
+        {actionButtons}
       </Form>
     );
   }
