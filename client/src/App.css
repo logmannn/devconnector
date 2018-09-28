@@ -2,13 +2,21 @@ img {
   width: 100%;
 }
 
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
 body {
-  margin-bottom: 100px !important;
+  position: relative;
+  margin: 0;
+  padding-bottom: 6rem;
+  min-height: 100%;
 }
 
 footer {
-  position: fixed;
-  width: 100%;
+  position: absolute;
+  right: 0;
   bottom: 0;
   left: 0;
 }
@@ -100,8 +108,25 @@ footer {
   padding: 0 0.5rem;
 }
 
-.d-md-block {
-  max-width: 78px;
+.container {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+input[type="date"] {
+  padding-right: 0;
+}
+
+.row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 1140px;
+    width: 100%;
+  }
 }
 
 @media screen and (max-width: 1200px) {

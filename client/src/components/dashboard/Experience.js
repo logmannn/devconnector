@@ -36,7 +36,6 @@ class Experience extends Component {
           <div className="space center">Years</div>
           <div className="space center">Location</div>
           <div className="space center">Description</div>
-          <div className="space center hide-when-tablet"> </div>
         </div>
         {experience}
       </div>
