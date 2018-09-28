@@ -29,14 +29,14 @@ class Experience extends Component {
 
     return (
       <div>
-        <h4 className="mb-5">Experience Credentials</h4>
-        <div className="evenly-space bold">
+        <h4 className="mb-5 center-mobile">Experience Credentials</h4>
+        <div className="evenly-space bold hide-when-tablet">
           <div className="space center">Company</div>
           <div className="space center">Title</div>
           <div className="space center">Years</div>
           <div className="space center">Location</div>
           <div className="space center">Description</div>
-          <div className="space center"> </div>
+          <div className="space center hide-when-tablet"> </div>
         </div>
         {experience}
       </div>

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import moment from "moment";
+import styled from "styled-components";
 import { connect } from "react-redux";
 import Fragment from "render-fragment";
 import TextFieldGroup from "../common/TextFieldGroup";
@@ -9,13 +10,16 @@ import {
   updateExperience,
   getCurrentProfile
 } from "../../actions/profileActions";
-import isFalseOrEmpty from "../../validation/is-false-or-empty";
 import PropTypes from "prop-types";
+
+const Form = styled.form`
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+`;
 
 class SingleExperience extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       company: "",
       title: "",
@@ -98,141 +102,153 @@ class SingleExperience extends Component {
     const { exp, errors } = this.props;
     const { disabled, editMode } = this.state;
 
+    const actionButtons = (
+      <div className="space center">
+        {!editMode ? (
+          <Fragment>
+            <button
+              className="btn btn-info"
+              onClick={this.onEditClick.bind(this, exp._id)}
+            >
+              Edit
+            </button>{" "}
+            <button
+              className="btn btn-danger"
+              onClick={this.onDeleteClick.bind(this, exp._id)}
+            >
+              Delete
+            </button>
+          </Fragment>
+        ) : (
+          <Fragment>
+            <button
+              className="btn btn-info"
+              onClick={this.onUpdate.bind(this, exp._id)}
+            >
+              Submit
+            </button>
+            <button
+              className="btn btn-danger"
+              onClick={this.onEditClick.bind(this, exp._id)}
+            >
+              Cancel
+            </button>
+          </Fragment>
+        )}
+      </div>
+    );
+
     return (
-      <form onSubmit={this.onSubmit} className="evenly-space">
-        <div className="space center">
-          {!editMode ? (
-            this.state.company
-          ) : (
-            <TextFieldGroup
-              placeholder="* Company"
-              name="company"
-              value={this.state.company}
-              onChange={this.onChange}
-              error={errors.company}
-            />
-          )}
-        </div>
-        <div className="space center">
-          {!editMode ? (
-            this.state.title
-          ) : (
-            <TextFieldGroup
-              placeholder="* Job Title"
-              name="title"
-              value={this.state.title}
-              onChange={this.onChange}
-              error={errors.title}
-            />
-          )}
-        </div>
-        <div className="space center">
-          {!editMode ? (
-            <Fragment>
-              {moment.utc(this.state.from).format("MM/DD/YYYY")} -{" "}
-              {this.state.to
-                ? moment.utc(this.state.to).format("MM/DD/YYYY")
-                : " Current"}
-            </Fragment>
-          ) : (
-            <Fragment>
-              <h6>From Date</h6>
+      <Form onSubmit={this.onSubmit}>
+        <div className="evenly-space column-tablet">
+          <div className="space center">
+            <div className="bold show-tablet">Company</div>
+            {!editMode ? (
+              this.state.company
+            ) : (
               <TextFieldGroup
-                name="from"
-                type="date"
-                placeholder="Date"
-                value={moment.utc(this.state.from).format("YYYY-MM-DD")}
+                placeholder="* Company"
+                name="company"
+                value={this.state.company}
                 onChange={this.onChange}
-                error={errors.from}
+                error={errors.company}
               />
-              <h6>To Date</h6>
+            )}
+          </div>
+          <div className="space center">
+            <div className="bold show-tablet">Title</div>
+            {!editMode ? (
+              this.state.title
+            ) : (
               <TextFieldGroup
-                name="to"
-                type="date"
-                placeholder="Date"
-                value={moment.utc(this.state.to).format("YYYY-MM-DD")}
+                placeholder="* Job Title"
+                name="title"
+                value={this.state.title}
                 onChange={this.onChange}
-                error={errors.to}
-                disabled={this.state.current ? "current" : ""}
+                error={errors.title}
               />
-              <div className="form-check mb-4">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  name="current"
-                  value={this.state.current}
-                  checked={this.state.current}
-                  onChange={this.onCheck}
-                  id="current"
+            )}
+          </div>
+          <div className="space center">
+            <div className="bold show-tablet">Years</div>
+            {!editMode ? (
+              <Fragment>
+                {moment.utc(this.state.from).format("MM/DD/YYYY")} -{" "}
+                {this.state.to
+                  ? moment.utc(this.state.to).format("MM/DD/YYYY")
+                  : " Current"}
+              </Fragment>
+            ) : (
+              <Fragment>
+                <TextFieldGroup
+                  name="from"
+                  type="date"
+                  placeholder="Date"
+                  value={moment.utc(this.state.from).format("YYYY-MM-DD")}
+                  onChange={this.onChange}
+                  error={errors.from}
                 />
-                <label className="form-check-label" onClick={this.onCheck}>
-                  Current Job
-                </label>
-              </div>
-            </Fragment>
-          )}
+                <h6>To</h6>
+                <TextFieldGroup
+                  name="to"
+                  type="date"
+                  placeholder="Date"
+                  value={moment.utc(this.state.to).format("YYYY-MM-DD")}
+                  onChange={this.onChange}
+                  error={errors.to}
+                  disabled={this.state.current ? "current" : ""}
+                />
+                <div className="form-check mb-4">
+                  <input
+                    type="checkbox"
+                    className="form-check-input"
+                    name="current"
+                    value={this.state.current}
+                    checked={this.state.current}
+                    onChange={this.onCheck}
+                    id="current"
+                  />
+                  <label className="form-check-label" onClick={this.onCheck}>
+                    Current Job
+                  </label>
+                </div>
+              </Fragment>
+            )}
+          </div>
+          <div className="space center">
+            <div className="bold show-tablet">Location</div>
+            {!editMode ? (
+              this.state.location
+            ) : (
+              <TextFieldGroup
+                placeholder="Location"
+                name="location"
+                value={this.state.location}
+                onChange={this.onChange}
+                error={errors.location}
+              />
+            )}
+          </div>
+          <div className="space form-box center">
+            <div className="bold show-tablet">Description</div>
+            {!editMode ? (
+              this.state.description
+            ) : (
+              <TextAreaFieldGroup
+                placeholder="Job Description"
+                name="description"
+                value={this.state.description}
+                onChange={this.onChange}
+                error={errors.description}
+                info="Tell us about the position"
+              />
+            )}
+          </div>
+          <div />
+          <div className="hide-when-tablet space">{actionButtons}</div>
         </div>
-        <div className="space center">
-          {!editMode ? (
-            this.state.location
-          ) : (
-            <TextFieldGroup
-              placeholder="Location"
-              name="location"
-              value={this.state.location}
-              onChange={this.onChange}
-              error={errors.location}
-            />
-          )}
-        </div>
-        <div className="space form-box center">
-          {!editMode ? (
-            this.state.description
-          ) : (
-            <TextAreaFieldGroup
-              placeholder="Job Description"
-              name="description"
-              value={this.state.description}
-              onChange={this.onChange}
-              error={errors.description}
-              info="Tell us about the position"
-            />
-          )}
-        </div>
-        <div className="space center">
-          {!editMode ? (
-            <Fragment>
-              <button
-                className="btn btn-info"
-                onClick={this.onEditClick.bind(this, exp._id)}
-              >
-                Edit
-              </button>{" "}
-              <button
-                className="btn btn-danger"
-                onClick={this.onDeleteClick.bind(this, exp._id)}
-              >
-                Delete
-              </button>
-            </Fragment>
-          ) : (
-            <Fragment>
-              <button
-                className="btn btn-info"
-                onClick={this.onUpdate.bind(this, exp._id)}
-              >
-                Submit
-              </button>
-              <button
-                className="btn btn-danger"
-                onClick={this.onEditClick.bind(this, exp._id)}
-              >
-                Cancel
-              </button>
-            </Fragment>
-          )}
-        </div>
-      </form>
+        <div className="hide-when-desktop">{actionButtons}</div>
+      </Form>
     );
   }
 }

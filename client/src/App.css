@@ -2,6 +2,17 @@ img {
   width: 100%;
 }
 
+body {
+  margin-bottom: 100px !important;
+}
+
+footer {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+}
+
 .landing {
   position: relative;
   background: url("./img/showcase.jpg") no-repeat;
@@ -45,6 +56,9 @@ img {
 
 .space {
   width: 100%;
+  overflow: hidden;
+  padding-left: 0.2rem;
+  padding-right: 0.2rem;
 }
 
 .bold {
@@ -52,10 +66,8 @@ img {
 }
 
 .form-box {
-  max-height: 100px;
   height: 100%;
   overflow: hidden;
-  overflow-y: scroll;
 }
 
 .center {
@@ -64,4 +76,74 @@ img {
 
 .border {
   border: 1px solid black;
+}
+
+.hide-when-desktop {
+  display: none;
+}
+
+.hide-when-mobile {
+  display: flex;
+}
+
+.show-mobile {
+  display: none;
+}
+
+.show-tablet {
+  display: none;
+}
+
+.form-control-lg {
+  font-size: 1rem;
+
+  padding: 0 0.5rem;
+}
+
+.d-md-block {
+  max-width: 78px;
+}
+
+@media screen and (max-width: 1200px) {
+}
+
+@media screen and (max-width: 767px) {
+  .hide-when-desktop {
+    display: block;
+  }
+
+  .hide-when-tablet {
+    display: none;
+  }
+
+  .show-tablet {
+    display: block;
+  }
+
+  .column-tablet {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .show-mobile {
+    display: block;
+  }
+
+  .hide-when-mobile {
+    display: none;
+  }
+
+  h1.display-4 {
+    font-size: 2.5rem;
+  }
+
+  .center-mobile {
+    text-align: center;
+  }
+
+  .mb-5,
+  .my-5 {
+    margin-bottom: 1.5rem !important;
+  }
 }
