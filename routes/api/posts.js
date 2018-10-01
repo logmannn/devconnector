@@ -50,6 +50,7 @@ router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    console.log(req.body);
     const { errors, isValid } = validatePostInput(req.body);
 
     // Check Validation
@@ -58,14 +59,18 @@ router.post(
       return res.status(400).json(errors);
     }
 
-    const newPost = new Post({
-      text: req.body.text,
-      name: req.body.name,
-      avatar: req.body.avatar,
-      user: req.user.id
-    });
+    // Get Profile handle
+    Profile.findOne({ user: req.user.id }).then(profile => {
+      const newPost = new Post({
+        text: req.body.text,
+        name: req.body.name,
+        avatar: req.body.avatar,
+        user: req.user.id,
+        handle: profile.handle
+      });
 
-    newPost.save().then(post => res.json(post));
+      newPost.save().then(post => res.json(post));
+    });
   }
 );
 
@@ -116,7 +121,7 @@ router.delete(
       Post.findById(req.params.id)
         .then(post => {
           // Check for post owner
-          if (post.user.toString() !== req.user.id) {
+          if (post.user.toString() !== req.user.id && !req.user.isAdmin) {
             return res
               .status(401)
               .json({ notauthorized: "User not authorized" });
@@ -211,18 +216,28 @@ router.post(
 
     Post.findById(req.params.id)
       .then(post => {
-        const newComment = {
-          text: req.body.text,
-          name: req.body.name,
-          avatar: req.body.avatar,
-          user: req.user.id
-        };
+        // Get Profile handle
+        Profile.findOne({ user: req.user.id })
+          .then(profile => {
+            const newComment = {
+              text: req.body.text,
+              name: req.body.name,
+              avatar: req.body.avatar,
+              user: req.user.id,
+              handle: profile.handle
+            };
 
-        // Add to comments array
-        post.comments.unshift(newComment);
+            // Add to comments array
+            post.comments.unshift(newComment);
 
-        // Save
-        post.save().then(post => res.json(post));
+            // Save
+            post.save().then(post => res.json(post));
+          })
+          .catch(err =>
+            res.status(404).json({
+              profilenotfound: "No profile found"
+            })
+          );
       })
       .catch(err => res.status(404).json({ postnotfound: "No post found" }));
   }

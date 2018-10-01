@@ -3,6 +3,9 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import { addComment } from "../../actions/postActions";
+import { getCurrentProfile } from "../../actions/profileActions";
+import { Link } from "react-router-dom";
+import Spinner from "../common/Spinner";
 
 class CommentForm extends Component {
   constructor(props) {
@@ -14,6 +17,10 @@ class CommentForm extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.getCurrentProfile();
   }
 
   componentWillReceiveProps(newProps) {
@@ -44,6 +51,46 @@ class CommentForm extends Component {
 
   render() {
     const { errors } = this.state;
+    const { user } = this.props.auth;
+    const { profile } = this.props.profile;
+
+    let formContent;
+    if (
+      profile === null
+      //  || loading
+    ) {
+      formContent = <Spinner />;
+    } else {
+      if (Object.keys(profile).length > 0) {
+        formContent = (
+          <form onSubmit={this.onSubmit}>
+            <div className="form-group">
+              <TextAreaFieldGroup
+                placeholder="Reply to post"
+                name="text"
+                value={this.state.text}
+                onChange={this.onChange}
+                error={errors.text}
+              />
+            </div>
+            <button type="submit" className="btn btn-dark">
+              Submit
+            </button>
+          </form>
+        );
+      } else {
+        // User is logged in but has no profile
+        formContent = (
+          <div>
+            <p className="lead text-muted">Welcome {user.name}</p>
+            <p>You have not yet setup a profile, please add some info</p>
+            <Link to="/create-profile" className="btn btn-lg btn-info">
+              Create Profile
+            </Link>
+          </div>
+        );
+      }
+    }
 
     return (
       <div className="post-form mb-3">
@@ -51,22 +98,7 @@ class CommentForm extends Component {
           <div className="card-header bg-info text-white">
             Make a comment...
           </div>
-          <div className="card-body">
-            <form onSubmit={this.onSubmit}>
-              <div className="form-group">
-                <TextAreaFieldGroup
-                  placeholder="Reply to post"
-                  name="text"
-                  value={this.state.text}
-                  onChange={this.onChange}
-                  error={errors.text}
-                />
-              </div>
-              <button type="submit" className="btn btn-dark">
-                Submit
-              </button>
-            </form>
-          </div>
+          <div className="card-body">{formContent}</div>
         </div>
       </div>
     );
@@ -82,10 +114,11 @@ CommentForm.propTypes = {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  errors: state.errors
+  errors: state.errors,
+  profile: state.profile
 });
 
 export default connect(
   mapStateToProps,
-  { addComment }
+  { addComment, getCurrentProfile }
 )(CommentForm);

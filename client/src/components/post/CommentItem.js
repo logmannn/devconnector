@@ -2,6 +2,20 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { deleteComment } from "../../actions/postActions";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+
+const ProfileImageWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+`;
+
+const ProfileImageLink = styled(Link)`
+  width: 40px;
+  padding-right: 10px;
+`;
 
 class CommentItem extends Component {
   onDeleteClick(postId, commentId) {
@@ -14,20 +28,19 @@ class CommentItem extends Component {
     return (
       <div className="card card-body mb-3">
         <div className="row">
-          <div className="col-md-2">
-            <a href="profile.html">
+          <ProfileImageWrapper className="col-md-2">
+            <ProfileImageLink to={`/profile/${comment.handle}`}>
               <img
                 className="rounded-circle d-none d-md-block"
                 src={comment.avatar}
                 alt=""
               />
-            </a>
-            <br />
+            </ProfileImageLink>
             <p className="text-center">{comment.name}</p>
-          </div>
+          </ProfileImageWrapper>
           <div className="col-md-10">
             <p className="lead">{comment.text}</p>
-            {comment.user === auth.user.id ? (
+            {comment.user === auth.user.id || auth.user.isAdmin ? (
               <button
                 onClick={this.onDeleteClick.bind(this, postId, comment._id)}
                 type="button"

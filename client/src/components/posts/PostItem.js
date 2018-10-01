@@ -5,6 +5,37 @@ import { Link } from "react-router-dom";
 import { deletePost, addLike, removeLike } from "../../actions/postActions";
 import ThumbsUp from "../../img/ThumbsUp";
 import ThumbsDown from "../../img/ThumbsDown";
+import styled from "styled-components";
+import Moment from "react-moment";
+
+const CardSections = styled.div`
+  width: 100%;
+  display: flex;
+`;
+
+const Avatar = styled.img`
+  width: 48px;
+  height: 48px;
+`;
+
+const UserName = styled.div``;
+
+const PostDate = styled(Moment)`
+  display: block;
+  color: #a9a9a9;
+  font-weight: lighter;
+  font-size: 0.8rem;
+`;
+
+const UserInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 0.6rem;
+`;
+
+const UserNameLink = styled(Link)`
+  color: #000000;
+`;
 
 class PostItem extends Component {
   constructor(props) {
@@ -77,18 +108,22 @@ class PostItem extends Component {
     return (
       <div className="card card-body mb-3">
         <div className="row">
-          <div className="col-md-2">
-            <a href="profile.html">
-              <img
+          <CardSections className="">
+            <Link to={`/profile/${post.handle}`}>
+              <Avatar
                 className="rounded-circle d-none d-md-block"
                 src={post.avatar}
                 alt=""
               />
-            </a>
-            <br />
-            <p className="text-center">{post.name}</p>
-          </div>
-          <div className="col-md-10">
+            </Link>
+            <UserInfo>
+              <UserNameLink to={`/profile/${post.handle}`}>
+                <UserName>{post.name}</UserName>
+              </UserNameLink>
+              <PostDate format="MM/DD/YYYY">{post.date}</PostDate>
+            </UserInfo>
+          </CardSections>
+          <CardSections className="">
             <p className="lead">{post.text}</p>
             <span>
               <button
@@ -109,7 +144,7 @@ class PostItem extends Component {
               <Link to={`/post/${post._id}`} className="btn btn-info mr-1">
                 Comments
               </Link>
-              {post.user === auth.user.id ? (
+              {post.user === auth.user.id || auth.user.isAdmin ? (
                 <button
                   onClick={this.onDeleteClick.bind(this, post._id)}
                   type="button"
@@ -119,7 +154,7 @@ class PostItem extends Component {
                 </button>
               ) : null}
             </span>
-          </div>
+          </CardSections>
         </div>
       </div>
     );
