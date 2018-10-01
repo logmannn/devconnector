@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import propTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
@@ -49,12 +49,12 @@ class Navbar extends Component {
     const guestLinks = (
       <ul className="navbar-nav ml-auto">
         <li className="nav-item center">
-          <Link className="nav-link" to="register">
+          <Link className="nav-link" to="/register">
             Sign Up
           </Link>
         </li>
         <li className="nav-item center">
-          <Link className="nav-link" to="login">
+          <Link className="nav-link" to="/login">
             Login
           </Link>
         </li>
@@ -79,7 +79,7 @@ class Navbar extends Component {
           <div className="collapse navbar-collapse" id="mobile-nav">
             <ul className="navbar-nav mr-auto">
               <li className="nav-item center">
-                <Link className="nav-link" to="profiles">
+                <Link className="nav-link" to="/profiles">
                   {" "}
                   Developers
                 </Link>
@@ -105,4 +105,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { logoutUser, clearCurrentProfile }
-)(Navbar);
+)(withRouter(Navbar));
