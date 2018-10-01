@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { deletePost, addLike, removeLike } from "../../actions/postActions";
 import ThumbsUp from "../../img/ThumbsUp";
 import ThumbsDown from "../../img/ThumbsDown";
@@ -62,6 +62,7 @@ class PostItem extends Component {
 
   onDeleteClick(id, auth) {
     this.props.deletePost(id);
+    this.props.history.push("/feed");
   }
 
   onLikeClick(id, auth, likes) {
@@ -176,4 +177,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { deletePost, addLike, removeLike }
-)(PostItem);
+)(withRouter(PostItem));
