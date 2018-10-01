@@ -142,7 +142,7 @@ class AddEducation extends Component {
                   </label>
                 </div>
                 <TextAreaFieldGroup
-                  placeholder="Job Description"
+                  placeholder="Education Description"
                   name="description"
                   value={this.state.description}
                   onChange={this.onChange}
