@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { withRouter, Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import TextFieldGroup from "../common/TextFieldGroup";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import { connect } from "react-redux";
-import propTypes from "prop-types";
+import PropTypes from "prop-types";
 import { addEducation, getCurrentProfile } from "../../actions/profileActions";
 
 class AddEducation extends Component {
@@ -13,6 +13,7 @@ class AddEducation extends Component {
       school: "",
       degree: "",
       fieldofstudy: "",
+      newlocation: "",
       from: "",
       to: "",
       current: false,
@@ -20,6 +21,10 @@ class AddEducation extends Component {
       errors: {},
       disabled: false
     };
+
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.onCheck = this.onCheck.bind(this);
   }
 
   componentDidMount() {
@@ -32,32 +37,33 @@ class AddEducation extends Component {
     }
   }
 
-  onSubmit = e => {
+  onSubmit(e) {
     e.preventDefault();
 
-    const eduData = {
+    const expData = {
       school: this.state.school,
       degree: this.state.degree,
       fieldofstudy: this.state.fieldofstudy,
+      newlocation: this.state.newlocation,
       from: this.state.from,
       to: this.state.to,
       current: this.state.current,
       description: this.state.description
     };
 
-    this.props.addEducation(eduData, this.props.history);
-  };
+    this.props.addEducation(expData, this.props.history);
+  }
 
-  onChange = e => {
+  onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
-  };
+  }
 
-  onCheck = e => {
+  onCheck(e) {
     this.setState({
       disabled: !this.state.disabled,
       current: !this.state.current
     });
-  };
+  }
 
   render() {
     const { errors } = this.state;
@@ -66,15 +72,15 @@ class AddEducation extends Component {
       <div className="add-education">
         <div className="container">
           <div className="row">
-            <div className="col-md 8 m-auto">
+            <div className="col-md-8 m-auto">
               <Link to="/dashboard" className="btn btn-light">
                 Go Back
               </Link>
               <h1 className="display-4 text-center">Add Education</h1>
               <p className="lead text-center">
-                Add any school, bootcamp, etc that you have attended
+                Add any job or position that you have had in the past or current
               </p>
-              <small className="d-block pb3">* = required fields</small>
+              <small className="d-block pb-3">* = required fields</small>
               <form onSubmit={this.onSubmit}>
                 <TextFieldGroup
                   placeholder="* School"
@@ -84,18 +90,25 @@ class AddEducation extends Component {
                   error={errors.school}
                 />
                 <TextFieldGroup
-                  placeholder="* Degree or Certification"
+                  placeholder="* Degree"
                   name="degree"
                   value={this.state.degree}
                   onChange={this.onChange}
                   error={errors.degree}
                 />
                 <TextFieldGroup
-                  placeholder="* Field of Study"
+                  placeholder="Field of Study"
                   name="fieldofstudy"
                   value={this.state.fieldofstudy}
                   onChange={this.onChange}
                   error={errors.fieldofstudy}
+                />
+                <TextFieldGroup
+                  placeholder="Location"
+                  name="newlocation"
+                  value={this.state.newlocation}
+                  onChange={this.onChange}
+                  error={errors.newlocation}
                 />
                 <h6>From</h6>
                 <TextFieldGroup
@@ -125,16 +138,16 @@ class AddEducation extends Component {
                     id="current"
                   />
                   <label htmlFor="current" className="form-check-label">
-                    Current Education
+                    Current Job
                   </label>
                 </div>
                 <TextAreaFieldGroup
-                  placeholder="Program Description"
+                  placeholder="Job Description"
                   name="description"
                   value={this.state.description}
                   onChange={this.onChange}
                   error={errors.description}
-                  info="Tell us about the program that you were in"
+                  info="Tell us about the position"
                 />
                 <input
                   type="submit"
@@ -151,9 +164,9 @@ class AddEducation extends Component {
 }
 
 AddEducation.propTypes = {
-  addEducation: propTypes.func.isRequired,
-  errors: propTypes.object.isRequired,
-  profile: propTypes.object.isRequired
+  addEducation: PropTypes.func.isRequired,
+  profile: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({

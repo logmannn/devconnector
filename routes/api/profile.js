@@ -88,7 +88,7 @@ router.get(
   (req, res) => {
     const errors = {};
     Profile.findOne({ user: req.user.id })
-      .populate("user", ["name", "avatar"])
+      .populate("user", ["name", "avatar", "isAdmin"])
       .then(profile => {
         if (!profile) {
           errors.noprofile = "There is no profile for this user";
@@ -236,6 +236,43 @@ router.post(
   }
 );
 
+// @route   POST api/profile/education/:id
+// @desc    Update an education
+// @access  Private
+router.post(
+  "/education/:exp_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { errors, isValid } = validateEducationInput(req.body);
+
+    if (!isValid) {
+      // Return any errors with 400 status
+      return res.status(400).json(errors);
+    }
+
+    Profile.findOne({ user: req.user.id })
+      .then(profile => {
+        const itemNumber = profile.education
+          .map(item => item.id)
+          .indexOf(req.params.exp_id);
+
+        let itemToUpdate = profile.education[itemNumber];
+
+        (itemToUpdate.school = req.body.school),
+          (itemToUpdate.degree = req.body.degree),
+          (itemToUpdate.newlocation = req.body.newlocation),
+          (itemToUpdate.fieldofstudy = req.body.fieldofstudy),
+          (itemToUpdate.from = req.body.from),
+          (itemToUpdate.to = req.body.to),
+          (itemToUpdate.current = req.body.current),
+          (itemToUpdate.description = req.body.description);
+
+        profile.save().then(profile => res.json(profile));
+      })
+      .catch(err => res.status(404).json(err));
+  }
+);
+
 // @route   POST api/profile/education
 // @desc    Add education to profile
 // @access  Private
@@ -256,6 +293,7 @@ router.post(
         const newEdu = {
           school: req.body.school,
           degree: req.body.degree,
+          newlocation: req.body.newlocation,
           fieldofstudy: req.body.fieldofstudy,
           from: req.body.from,
           to: req.body.to,

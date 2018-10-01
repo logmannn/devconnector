@@ -1,63 +1,53 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import Moment from "react-moment";
+import propTypes from "prop-types";
 import { deleteEducation } from "../../actions/profileActions";
+import SingleEducation from "./SingleEducation";
 
 class Education extends Component {
-  onDeleteClick(id) {
+  onDeleteClick = id => {
     this.props.deleteEducation(id);
-  }
+  };
+
+  onEditClick = id => {
+    this.props.editEducation(id);
+  };
 
   render() {
+    console.log(this.props.education);
+
     const education = this.props.education
       .sort(function(a, b) {
         return +new Date(a.from) - +new Date(b.from);
       })
       .reverse()
       .map(edu => (
-        <tr key={edu._id}>
-          <td>{edu.school}</td>
-          <td>{edu.degree}</td>
-          <td>
-            <Moment format="YYYY/MM/DD">{edu.from}</Moment> -
-            {edu.to === null ? (
-              " Current"
-            ) : (
-              <Moment format="YYYY/MM/DD">{edu.to}</Moment>
-            )}
-          </td>
-          <td>
-            <button
-              onClick={this.onDeleteClick.bind(this, edu._id)}
-              className="btn btn-danger"
-            >
-              Delete
-            </button>
-          </td>
-        </tr>
+        <SingleEducation
+          edu={edu}
+          key={edu._id}
+          onDeleteClick={this.onDeleteClick}
+        />
       ));
+
     return (
       <div>
-        <h4 className="mb-4">Education Credentials</h4>
-        <table className="table">
-          <thead>
-            <tr>
-              <th>School</th>
-              <th>Degree</th>
-              <th>Years</th>
-              <th />
-            </tr>
-            {education}
-          </thead>
-        </table>
+        <h4 className="mb-5 center-mobile">Education Credentials</h4>
+        <div className="evenly-space bold hide-when-tablet">
+          <div className="space center">School</div>
+          <div className="space center">Degree</div>
+          <div className="space center">Years</div>
+          <div className="space center">Location</div>
+          <div className="space center">Field of Study</div>
+          <div className="space center">Description</div>
+        </div>
+        {education}
       </div>
     );
   }
 }
 
-Education.propTypes = {
-  deleteEducation: PropTypes.func.isRequired
+deleteEducation.propTypes = {
+  deleteEducation: propTypes.func.isRequired
 };
 
 export default connect(

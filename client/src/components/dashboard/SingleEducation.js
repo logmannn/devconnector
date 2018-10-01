@@ -7,7 +7,7 @@ import TextFieldGroup from "../common/TextFieldGroup";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import { withRouter } from "react-router-dom";
 import {
-  updateExperience,
+  updateEducation,
   getCurrentProfile
 } from "../../actions/profileActions";
 import PropTypes from "prop-types";
@@ -19,45 +19,48 @@ const Form = styled.form`
   padding-top: 1rem;
 `;
 
-const ExperienceDetails = styled.div`
+const EducationDetails = styled.div`
   margin-bottom: 1rem;
 `;
 
-class SingleExperience extends Component {
+class SingleEducation extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      company: "",
-      title: "",
-      location: "",
+      school: "",
+      newlocation: "",
+      degree: "",
       from: "",
       to: "",
       current: "",
       description: "",
+      fieldofstudy: "",
       errors: {},
       disabled: false,
       editMode: false,
-      companyEdit: "",
-      titleEdit: "",
-      locationEdit: "",
+      schoolEdit: "",
+      newlocationEdit: "",
+      degreeEdit: "",
       fromEdit: "",
       toEdit: "",
       currentEdit: "",
       descriptionEdit: "",
+      fieldofstudyEdit: "",
       id: 0
     };
   }
 
   componentDidMount() {
     this.setState({
-      company: this.props.exp.company,
-      title: this.props.exp.title,
-      location: this.props.exp.location,
-      from: this.props.exp.from,
-      to: this.props.exp.to,
-      current: this.props.exp.current,
-      description: this.props.exp.description,
-      id: this.props.exp._id
+      school: this.props.edu.school,
+      newlocation: this.props.edu.newlocation,
+      degree: this.props.edu.degree,
+      from: this.props.edu.from,
+      to: this.props.edu.to,
+      current: this.props.edu.current,
+      description: this.props.edu.description,
+      id: this.props.edu._id,
+      fieldofstudy: this.props.edu.fieldofstudy
     });
   }
 
@@ -68,25 +71,27 @@ class SingleExperience extends Component {
   onEditClick = id => {
     this.setState({
       editMode: !this.state.editMode,
-      companyEdit: this.state.company,
-      titleEdit: this.state.title,
-      locationEdit: this.state.location,
+      schoolEdit: this.state.school,
+      newlocationEdit: this.state.newlocation,
+      degreeEdit: this.state.degree,
       fromEdit: this.state.from,
       toEdit: this.state.to,
       currentEdit: this.state.current,
-      descriptionEdit: this.state.description
+      descriptionEdit: this.state.description,
+      fieldofstudyEdit: this.state.fieldofstudy
     });
   };
   onCancelClick = id => {
     this.setState({
       editMode: !this.state.editMode,
-      company: this.state.companyEdit,
-      title: this.state.titleEdit,
-      location: this.state.locationEdit,
+      school: this.state.schoolEdit,
+      newlocation: this.state.newlocationEdit,
+      degree: this.state.degreeEdit,
       from: this.state.fromEdit,
       to: this.state.toEdit,
       current: this.state.currentEdit,
-      description: this.state.descriptionEdit
+      description: this.state.descriptionEdit,
+      fieldofstudy: this.state.fieldofstudyEdit
     });
   };
 
@@ -105,37 +110,39 @@ class SingleExperience extends Component {
   };
 
   onUpdate = id => {
-    const { exp, updateExperience } = this.props;
+    const { edu, updateEducation } = this.props;
 
     this.setState({
       editMode: !this.state.editMode,
-      companyEdit: this.state.company,
-      titleEdit: this.state.title,
-      locationEdit: this.state.location,
+      schoolEdit: this.state.school,
+      newlocationEdit: this.state.newlocation,
+      degreeEdit: this.state.degree,
       fromEdit: this.state.from,
       toEdit: this.state.to,
       currentEdit: this.state.current,
       descriptionEdit: this.state.description,
+      fieldofstudyEdit: this.state.fieldofstudyEdit,
       errors: {}
     });
 
-    const expData = {
-      company: this.state.company,
-      title: this.state.title,
-      location: this.state.location,
+    const eduData = {
+      school: this.state.school,
+      newlocation: this.state.newlocation,
+      degree: this.state.degree,
       from: this.state.from,
       to: this.state.to,
       current: this.state.current,
       description: this.state.description,
+      fieldofstudy: this.state.fieldofstudy,
       id: id
     };
 
-    updateExperience(expData, exp._id);
+    updateEducation(eduData, edu._id);
   };
 
   componentWillReceiveProps(nextProps) {
-    if (typeof nextProps.errors[nextProps.exp._id] !== "undefined") {
-      if (Object.keys(nextProps.errors[nextProps.exp._id]).length === 0) {
+    if (typeof nextProps.errors[nextProps.edu._id] !== "undefined") {
+      if (Object.keys(nextProps.errors[nextProps.edu._id]).length === 0) {
         this.setState({
           editMode: false
         });
@@ -145,14 +152,15 @@ class SingleExperience extends Component {
         });
         this.setState({
           errors: {
-            company: nextProps.errors[nextProps.exp._id].company,
-            title: nextProps.errors[nextProps.exp._id].title,
-            location: nextProps.errors[nextProps.exp._id].location,
-            from: nextProps.errors[nextProps.exp._id].from,
-            to: nextProps.errors[nextProps.exp._id].to,
-            current: nextProps.errors[nextProps.exp._id].current,
-            description: nextProps.errors[nextProps.exp._id].description,
-            id: nextProps.errors[nextProps.exp._id].id
+            school: nextProps.errors[nextProps.edu._id].school,
+            degree: nextProps.errors[nextProps.edu._id].degree,
+            newlocation: nextProps.errors[nextProps.edu._id].newlocation,
+            from: nextProps.errors[nextProps.edu._id].from,
+            to: nextProps.errors[nextProps.edu._id].to,
+            current: nextProps.errors[nextProps.edu._id].current,
+            description: nextProps.errors[nextProps.edu._id].description,
+            id: nextProps.errors[nextProps.edu._id].id,
+            fieldofstudy: nextProps.errors[nextProps.edu._id].fieldofstudy
           }
         });
       }
@@ -160,7 +168,7 @@ class SingleExperience extends Component {
   }
 
   render() {
-    const { exp } = this.props;
+    const { edu } = this.props;
     const { editMode, errors } = this.state;
 
     const actionButtons = (
@@ -169,13 +177,13 @@ class SingleExperience extends Component {
           <Fragment>
             <button
               className="btn btn-info"
-              onClick={this.onEditClick.bind(this, exp._id)}
+              onClick={this.onEditClick.bind(this, edu._id)}
             >
               Edit
             </button>{" "}
             <button
               className="btn btn-danger"
-              onClick={this.onDeleteClick.bind(this, exp._id)}
+              onClick={this.onDeleteClick.bind(this, edu._id)}
             >
               Delete
             </button>
@@ -184,13 +192,13 @@ class SingleExperience extends Component {
           <Fragment>
             <button
               className="btn btn-info"
-              onClick={this.onUpdate.bind(this, exp._id)}
+              onClick={this.onUpdate.bind(this, edu._id)}
             >
               Submit
             </button>
             <button
               className="btn btn-danger"
-              onClick={this.onCancelClick.bind(this, exp._id)}
+              onClick={this.onCancelClick.bind(this, edu._id)}
             >
               Cancel
             </button>
@@ -201,32 +209,32 @@ class SingleExperience extends Component {
 
     return (
       <Form onSubmit={this.onSubmit}>
-        <ExperienceDetails className="evenly-space column-tablet">
+        <EducationDetails className="evenly-space column-tablet">
           <div className="space center">
-            <div className="bold show-tablet">Company</div>
+            <div className="bold show-tablet">School</div>
             {!editMode ? (
-              this.state.company
+              this.state.school
             ) : (
               <TextFieldGroup
-                placeholder="* Company"
-                name="company"
-                value={this.state.company}
+                placeholder="* School"
+                name="school"
+                value={this.state.school}
                 onChange={this.onChange}
-                error={errors.company}
+                error={errors.school}
               />
             )}
           </div>
           <div className="space center">
             <div className="bold show-tablet">Title</div>
             {!editMode ? (
-              this.state.title
+              this.state.degree
             ) : (
               <TextFieldGroup
                 placeholder="* Job Title"
-                name="title"
-                value={this.state.title}
+                name="degree"
+                value={this.state.degree}
                 onChange={this.onChange}
-                error={errors.title}
+                error={errors.degree}
               />
             )}
           </div>
@@ -279,14 +287,28 @@ class SingleExperience extends Component {
           <div className="space center">
             <div className="bold show-tablet">Location</div>
             {!editMode ? (
-              this.state.location
+              this.state.newlocation
             ) : (
               <TextFieldGroup
                 placeholder="Location"
-                name="location"
-                value={this.state.location}
+                name="newlocation"
+                value={this.state.newlocation}
                 onChange={this.onChange}
-                error={errors.location}
+                error={errors.newlocation}
+              />
+            )}
+          </div>
+          <div className="space center">
+            <div className="bold show-tablet">Field of Study</div>
+            {!editMode ? (
+              this.state.fieldofstudy
+            ) : (
+              <TextFieldGroup
+                placeholder="Field of Study"
+                name="fieldofstudy"
+                value={this.state.fieldofstudy}
+                onChange={this.onChange}
+                error={errors.fieldofstudy}
               />
             )}
           </div>
@@ -306,25 +328,25 @@ class SingleExperience extends Component {
             )}
           </div>
           <div />
-        </ExperienceDetails>
+        </EducationDetails>
         {actionButtons}
       </Form>
     );
   }
 }
 
-SingleExperience.proptypes = {
-  updateExperience: PropTypes.func.isRequired,
-  experience: PropTypes.object.isRequired,
+SingleEducation.proptypes = {
+  updateEducation: PropTypes.func.isRequired,
+  education: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  experience: state.exp,
+  education: state.edu,
   errors: state.errors
 });
 
 export default connect(
   mapStateToProps,
-  { updateExperience, getCurrentProfile }
-)(withRouter(SingleExperience));
+  { updateEducation, getCurrentProfile }
+)(withRouter(SingleEducation));

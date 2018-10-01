@@ -45,7 +45,8 @@ router.post("/register", (req, res) => {
           name: req.body.name,
           email: req.body.email,
           avatar,
-          password: req.body.password
+          password: req.body.password,
+          isAdmin: false
         });
 
         bcrypt.genSalt(10, (err, salt) => {
@@ -93,7 +94,8 @@ router.post("/login", (req, res) => {
         const payload = {
           id: user.id,
           name: user.name,
-          avatar: user.avatar
+          avatar: user.avatar,
+          isAdmin: user.isAdmin
         }; // create jwt payload
 
         // sign token expires

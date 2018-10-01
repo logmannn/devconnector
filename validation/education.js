@@ -1,46 +1,120 @@
 const Validator = require("validator");
 const isEmpty = require("./is-empty");
-const isFalseOrEmpty = require("./is-false-or-empty");
 
 module.exports = function validateExperienceInput(data) {
   let errors = {};
 
   data.school = !isEmpty(data.school) ? data.school : "";
   data.degree = !isEmpty(data.degree) ? data.degree : "";
-  data.fieldofstudy = !isEmpty(data.fieldofstudy) ? data.fieldofstudy : "";
   data.from = !isEmpty(data.from) ? data.from : "";
 
-  if (!Validator.isLength(data.school, { max: 100 })) {
-    errors.school = "School field must be less than 100 characters";
-  }
-  if (Validator.isEmpty(data.school)) {
-    errors.school = "School field is required";
+  let [
+    degree,
+    school,
+    newlocation,
+    from,
+    to,
+    description,
+    current,
+    fieldofstudy
+  ] = [];
+  let id = data.id;
+
+  let fromTest = new Date(data.from.replace("T00:00:00.000Z", ""));
+
+  if (data.to) {
+    let toTest = new Date(data.to.replace("T00:00:00.000Z", ""));
+
+    if (!data.current) {
+      if (fromTest > toTest) {
+        to = "From field must be before To field";
+      }
+      if (toTest > new Date()) {
+        to = "To field must not be in the future";
+      }
+    }
   }
 
-  if (!Validator.isLength(data.degree, { max: 100 })) {
-    errors.degree = "Degree field must be less than 100 characters";
+  if (fromTest > new Date()) {
+    from = "From field must not be in the future";
   }
+
   if (Validator.isEmpty(data.degree)) {
-    errors.degree = "Degree field is required";
+    degree = "Degree field is required";
+  }
+  if (!Validator.isLength(data.degree, { max: 100 })) {
+    degree = "Title field must be less than 100 characters";
   }
 
-  if (!Validator.isLength(data.from, { max: 100 })) {
-    errors.from = "From field must be less than 100 characters";
+  if (Validator.isEmpty(data.school)) {
+    school = "School field is required";
   }
+  if (!Validator.isLength(data.school, { max: 100 })) {
+    school = "School field must be less than 100 characters";
+  }
+
+  if (!Validator.isLength(data.newlocation, { max: 100 })) {
+    newlocation = "Location field must be less than 100 characters";
+  }
+
+  if (!Validator.isLength(data.newlocation, { max: 100 })) {
+    fieldofstudy = "Field of Study field must be less than 100 characters";
+  }
+
   if (Validator.isEmpty(data.from)) {
-    errors.from = "From date field is required";
+    from = "From date field is required";
   }
 
-  if (!Validator.isLength(data.fieldofstudy, { max: 100 })) {
-    errors.fieldofstudy =
-      "Field of study field must be less than 100 characters";
-  }
-  if (Validator.isEmpty(data.fieldofstudy)) {
-    errors.fieldofstudy = "Field of study field is required";
+  if (!Validator.isLength(data.description, { max: 100 })) {
+    description = "Description field must be less than 100 characters";
   }
 
-  if (isFalseOrEmpty(data.current) && isFalseOrEmpty(data.to)) {
-    errors.current = "Please specify an end date or if current";
+  if (id) {
+    if (
+      degree ||
+      school ||
+      newlocation ||
+      from ||
+      to ||
+      description ||
+      current ||
+      fieldofstudy
+    ) {
+      errors = {
+        [id]: {
+          degree,
+          school,
+          newlocation,
+          from,
+          to,
+          description,
+          current,
+          fieldofstudy
+        }
+      };
+    }
+  } else {
+    if (
+      degree ||
+      school ||
+      newlocation ||
+      from ||
+      to ||
+      description ||
+      current ||
+      fieldofstudy
+    ) {
+      errors = {
+        degree,
+        school,
+        newlocation,
+        from,
+        to,
+        description,
+        current,
+        fieldofstudy
+      };
+    }
   }
 
   return {

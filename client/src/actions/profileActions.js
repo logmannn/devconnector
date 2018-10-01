@@ -126,6 +126,7 @@ export const addExperience = (expData, history) => dispatch => {
 
 // Add education
 export const addEducation = (eduData, history) => dispatch => {
+  console.log(eduData);
   axios
     .post("/api/profile/education", eduData)
     .then(res => history.push("/dashboard"))
@@ -142,6 +143,31 @@ export const updateExperience = (expData, id) => dispatch => {
   dispatch(clearErrors());
   axios
     .post(`/api/profile/experience/${id}`, expData)
+    .then(res =>
+      dispatch({
+        type: GET_PROFILE,
+        payload: res.data
+      })
+    )
+    .catch(err => {
+      if (err.response.status === 401) {
+        store.dispatch(logoutUser());
+        store.dispatch(clearCurrentProfile());
+        window.location.href = "/login";
+      } else {
+        dispatch({
+          type: GET_ERRORS,
+          payload: err.response.data
+        });
+      }
+    });
+};
+
+// Update Education
+export const updateEducation = (eduData, id) => dispatch => {
+  dispatch(clearErrors());
+  axios
+    .post(`/api/profile/education/${id}`, eduData)
     .then(res =>
       dispatch({
         type: GET_PROFILE,
