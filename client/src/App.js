@@ -18,7 +18,7 @@ import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import Dashboard from "./components/dashboard/Dashboard";
 import CreateProfile from "./components/create-profile/CreateProfile";
-import EditProfile from "./components/edit-profile/EditProfile";
+import EditProfileForm from "./components/edit-profile/EditProfileForm";
 import AddExperience from "./components/add-credentials/add-experience";
 import AddEducation from "./components/add-credentials/add-education";
 import Profiles from "./components/profiles/Profiles";
@@ -76,7 +76,7 @@ class App extends Component {
                 <PrivateRoute
                   exact
                   path="/edit-profile"
-                  component={EditProfile}
+                  component={EditProfileForm}
                 />
               </Switch>
               <Switch>

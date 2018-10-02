@@ -22,7 +22,7 @@ const TextFieldGroup = ({
         })}
         placeholder={placeholder}
         name={name}
-        value={value}
+        value={value ? value : ""}
         onChange={onChange}
         disabled={disabled}
       />
@@ -35,7 +35,7 @@ const TextFieldGroup = ({
 TextFieldGroup.propTypes = {
   name: propTypes.string.isRequired,
   placeholder: propTypes.string,
-  value: propTypes.string.isRequired,
+  // value: propTypes.string.isRequired,
   info: propTypes.string,
   error: propTypes.string,
   type: propTypes.string.isRequired,

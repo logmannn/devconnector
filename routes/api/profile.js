@@ -118,15 +118,14 @@ router.post(
     // Get fields
     const profileFields = {};
     profileFields.user = req.user.id;
-    if (req.body.handle) profileFields.handle = req.body.handle;
-    if (req.body.company) profileFields.company = req.body.company;
-    if (req.body.website) profileFields.website = req.body.website;
-    if (req.body.location) profileFields.location = req.body.location;
-    if (req.body.bio) profileFields.bio = req.body.bio;
-    if (req.body.status) profileFields.status = req.body.status;
-    if (req.body.githubusername)
-      profileFields.githubusername = req.body.githubusername;
-    // Skills - Split into array
+    profileFields.handle = req.body.handle;
+    profileFields.company = req.body.company;
+    profileFields.website = req.body.website;
+    profileFields.location = req.body.location;
+    profileFields.bio = req.body.bio;
+    profileFields.status = req.body.status;
+    profileFields.githubusername = req.body.githubusername;
+    // Skills - Spilt into array
     if (typeof req.body.skills !== "undefined") {
       profileFields.skills = req.body.skills.split(",");
     }
@@ -150,7 +149,7 @@ router.post(
       } else {
         // Create
 
-        // Check to see if the handle already exists
+        // Check if handle exists
         Profile.findOne({ handle: profileFields.handle }).then(profile => {
           if (profile) {
             errors.handle = "That handle already exists";

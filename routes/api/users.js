@@ -118,6 +118,60 @@ router.post("/login", (req, res) => {
   });
 });
 
+// @route   POST api/users/resetpassword
+// @desc    Reset user password
+// @access  Private
+router.post(
+  "/resetpassword",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const email = req.user.email;
+    const password = req.body.password;
+    let newpassword = req.body.newpassword;
+
+    let salt = bcrypt.genSaltSync(10);
+    newpassword = bcrypt.hashSync(newpassword, salt);
+
+    const data = { email, password };
+
+    // res.json(data);
+
+    const { errors, isValid } = validateLoginInput(data);
+    // Check Validation
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
+    // Find the user by email
+    User.findOne({ email }).then(user => {
+      // Check for user
+      if (!user) {
+        errors.email = "User not found";
+        return res.status(404).json(errors);
+      }
+
+      // res.json(user);
+
+      // // Check Password
+      bcrypt.compare(password, user.password).then(isMatch => {
+        if (isMatch) {
+          // user matched
+          User.findOneAndUpdate(
+            { _id: user._id },
+            { $set: { password: newpassword } },
+            { new: true }
+          ).then(user => res.json(user));
+
+          res.json(user);
+        } else {
+          errors.password = "Password Incorrect";
+          return res.status(400).json(errors);
+        }
+      });
+    });
+  }
+);
+
 // @route   GET api/users/current
 // @desc    Login user / Return current user
 // @access  private
