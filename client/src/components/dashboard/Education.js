@@ -14,8 +14,6 @@ class Education extends Component {
   };
 
   render() {
-    console.log(this.props.education);
-
     const education = this.props.education
       .sort(function(a, b) {
         return +new Date(a.from) - +new Date(b.from);

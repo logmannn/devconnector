@@ -79,6 +79,7 @@ class Login extends Component {
                     type="submit"
                     className="btn btn-info btn-block mt-4"
                     onSubmit={this.onSubmit}
+                    value="Login"
                   />
                 </form>
               </div>

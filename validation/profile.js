@@ -7,6 +7,7 @@ module.exports = function validateProfileInput(data) {
   data.handle = !isEmpty(data.handle) ? data.handle : "";
   data.status = !isEmpty(data.status) ? data.status : "";
   data.skills = !isEmpty(data.skills) ? data.skills : "";
+  data.company = !isEmpty(data.company) ? data.company : "";
 
   if (!Validator.isLength(data.handle, { min: 2, max: 40 })) {
     errors.handle = "Handle needs to be between 2 and 40 characters";
@@ -29,13 +30,15 @@ module.exports = function validateProfileInput(data) {
     errors.skills = "Skills field is required";
   }
 
+  if (!Validator.isLength(data.company, { max: 100 })) {
+    errors.company = "Company must be less than 100 characters";
+  }
+
   if (!Validator.isLength(data.website, { max: 100 })) {
     errors.website = "Website field must be less than 100 characters";
   }
-  if (!isEmpty(data.website)) {
-    if (!Validator.isURL(data.website)) {
-      errors.website = "Not a valid URL";
-    }
+  if (!isEmpty(data.website) && !Validator.isURL(data.website)) {
+    errors.website = "Not a valid URL";
   }
 
   if (!Validator.isLength(data.youtube, { max: 100 })) {
