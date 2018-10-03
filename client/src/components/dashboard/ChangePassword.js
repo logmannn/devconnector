@@ -4,6 +4,12 @@ import Fragment from "render-fragment";
 import AuthFieldGroup from "../common/AuthFieldGroup";
 import { resetPassword } from "../../actions/authActions";
 import propTypes from "prop-types";
+import styled from "styled-components";
+
+const Input = styled.div`
+  max-width: 170px;
+  width: 100%;
+`;
 
 class ChangePassword extends Component {
   constructor(props) {
@@ -44,44 +50,43 @@ class ChangePassword extends Component {
 
   render() {
     const { errors } = this.props;
+    console.log(errors);
     return (
       <Fragment>
         <h4 className="mb-5 center-mobile">Change Your Password</h4>
         <form onSubmit={this.onSubmit}>
-          <AuthFieldGroup
-            placeholder="Current Password"
-            name="passwordChange"
-            icon=""
-            type="password"
-            value={this.state.passwordChange}
-            onChange={this.onChange}
-            error={errors.password}
-          />
+          <Input>
+            <AuthFieldGroup
+              placeholder="Current Password"
+              name="passwordChange"
+              icon=""
+              type="password"
+              value={this.state.passwordChange}
+              onChange={this.onChange}
+              error={errors.password}
+            />
 
-          <AuthFieldGroup
-            placeholder="New Password"
-            name="newPasswordChange"
-            icon=""
-            type="password"
-            value={this.state.newPasswordChange}
-            onChange={this.onChange}
-            error={errors.newPasswordChange}
-          />
+            <AuthFieldGroup
+              placeholder="New Password"
+              name="newPasswordChange"
+              icon=""
+              type="password"
+              value={this.state.newPasswordChange}
+              onChange={this.onChange}
+              error={errors.newpassword}
+            />
 
-          <AuthFieldGroup
-            placeholder="Confirm New Password"
-            name="confirmNewPasswordChange"
-            icon=""
-            type="password"
-            value={this.state.confirmNewPasswordChange}
-            onChange={this.onChange}
-            error={errors.confirmNewPasswordChange}
-          />
-          <input
-            type="submit"
-            value="Submit"
-            className="btn btn-info btn-block mt-4"
-          />
+            <AuthFieldGroup
+              placeholder="Confirm New Password"
+              name="confirmNewPasswordChange"
+              icon=""
+              type="password"
+              value={this.state.confirmNewPasswordChange}
+              onChange={this.onChange}
+              error={errors.confirmNewPassword}
+            />
+          </Input>
+          <input type="submit" value="Submit" className="btn btn-info" />
         </form>
       </Fragment>
     );

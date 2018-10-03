@@ -261,7 +261,6 @@ class SingleEducation extends Component {
                 <TextFieldGroup
                   name="to"
                   type="date"
-                  placeholder="Date"
                   value={moment.utc(this.state.to).format("YYYY-MM-DD")}
                   onChange={this.onChange}
                   error={errors.to}
