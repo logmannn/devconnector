@@ -1,6 +1,6 @@
 import React from "react";
 import classnames from "classnames";
-import PropTypes from "prop-types";
+import propTypes from "prop-types";
 
 const InputGroup = ({
   name,
@@ -33,13 +33,13 @@ const InputGroup = ({
 };
 
 InputGroup.propTypes = {
-  name: PropTypes.string.isRequired,
-  placeholder: PropTypes.string,
-  value: PropTypes.string,
-  icon: PropTypes.string,
-  error: PropTypes.string,
-  type: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired
+  name: propTypes.string.isRequired,
+  placeholder: propTypes.string,
+  value: propTypes.string,
+  icon: propTypes.string,
+  error: propTypes.string,
+  type: propTypes.string.isRequired,
+  onChange: propTypes.func.isRequired
 };
 
 InputGroup.defaultProps = {

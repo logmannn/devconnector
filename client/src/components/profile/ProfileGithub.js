@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
+import propTypes from "prop-types";
 
 class ProfileGithub extends Component {
   constructor(props) {
@@ -69,7 +69,7 @@ class ProfileGithub extends Component {
 }
 
 ProfileGithub.propTypes = {
-  username: PropTypes.string.isRequired
+  username: propTypes.string.isRequired
 };
 
 export default ProfileGithub;

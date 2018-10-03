@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import propTypes from "prop-types";
 import PostForm from "./PostForm";
 import Spinner from "../common/Spinner";
 import { getPosts } from "../../actions/postActions";
@@ -37,8 +37,8 @@ class Posts extends Component {
 }
 
 Posts.propTypes = {
-  post: PropTypes.object.isRequired,
-  getPosts: PropTypes.func.isRequired
+  post: propTypes.object.isRequired,
+  getPosts: propTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({

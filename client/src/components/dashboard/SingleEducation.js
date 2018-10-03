@@ -10,7 +10,7 @@ import {
   updateEducation,
   getCurrentProfile
 } from "../../actions/profileActions";
-import PropTypes from "prop-types";
+import propTypes from "prop-types";
 
 const Form = styled.form`
   margin-bottom: 1rem;
@@ -336,9 +336,9 @@ class SingleEducation extends Component {
 }
 
 SingleEducation.proptypes = {
-  updateEducation: PropTypes.func.isRequired,
-  education: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
+  updateEducation: propTypes.func.isRequired,
+  education: propTypes.object.isRequired,
+  errors: propTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({

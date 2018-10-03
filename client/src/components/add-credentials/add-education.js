@@ -3,7 +3,7 @@ import { Link, withRouter } from "react-router-dom";
 import TextFieldGroup from "../common/TextFieldGroup";
 import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import propTypes from "prop-types";
 import { addEducation, getCurrentProfile } from "../../actions/profileActions";
 
 class AddEducation extends Component {
@@ -141,8 +141,8 @@ class AddEducation extends Component {
                     Current Job
                   </label>
                 </div>
+                <h6>Description</h6>
                 <TextAreaFieldGroup
-                  placeholder="Education Description"
                   name="description"
                   value={this.state.description}
                   onChange={this.onChange}
@@ -164,9 +164,9 @@ class AddEducation extends Component {
 }
 
 AddEducation.propTypes = {
-  addEducation: PropTypes.func.isRequired,
-  profile: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
+  addEducation: propTypes.func.isRequired,
+  profile: propTypes.object.isRequired,
+  errors: propTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({

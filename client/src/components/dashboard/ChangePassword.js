@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Fragment from "render-fragment";
-import TextFieldGroup from "../common/TextFieldGroup";
+import AuthFieldGroup from "../common/AuthFieldGroup";
 import { resetPassword } from "../../actions/authActions";
+import propTypes from "prop-types";
 
 class ChangePassword extends Component {
   constructor(props) {
@@ -47,7 +48,7 @@ class ChangePassword extends Component {
       <Fragment>
         <h4 className="mb-5 center-mobile">Change Your Password</h4>
         <form onSubmit={this.onSubmit}>
-          <TextFieldGroup
+          <AuthFieldGroup
             placeholder="Current Password"
             name="passwordChange"
             icon=""
@@ -57,7 +58,7 @@ class ChangePassword extends Component {
             error={errors.password}
           />
 
-          <TextFieldGroup
+          <AuthFieldGroup
             placeholder="New Password"
             name="newPasswordChange"
             icon=""
@@ -67,7 +68,7 @@ class ChangePassword extends Component {
             error={errors.newPasswordChange}
           />
 
-          <TextFieldGroup
+          <AuthFieldGroup
             placeholder="Confirm New Password"
             name="confirmNewPasswordChange"
             icon=""
@@ -87,11 +88,13 @@ class ChangePassword extends Component {
   }
 }
 
-// ChangePassword.propTypes = {
-//   createProfile: PropTypes.func.isRequired,
-//   profile: PropTypes.object.isRequired,
-//   errors: PropTypes.object.isRequired
-// };
+ChangePassword.propTypes = {
+  resetPassword: propTypes.func.isRequired,
+  profile: propTypes.object.isRequired,
+  auth: propTypes.object.isRequired,
+  profile: propTypes.object.isRequired,
+  errors: propTypes.object.isRequired
+};
 
 const mapStateToProps = state => ({
   auth: state.auth,

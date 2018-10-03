@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+import propTypes from "prop-types";
 import CommentItem from "./CommentItem";
 
 export class CommentFeed extends Component {
   static propTypes = {
-    prop: PropTypes
+    prop: propTypes
   };
 
   render() {
@@ -17,8 +17,8 @@ export class CommentFeed extends Component {
 }
 
 CommentFeed.propTypes = {
-  comments: PropTypes.array.isRequired,
-  postId: PropTypes.string.isRequired
+  comments: propTypes.array.isRequired,
+  postId: propTypes.string.isRequired
 };
 
 export default CommentFeed;

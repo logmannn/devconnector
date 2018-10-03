@@ -5,6 +5,7 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { registerUser } from "../../actions/authActions";
 import TextFieldGroup from "../common/TextFieldGroup";
+import AuthFieldGroup from "../common/AuthFieldGroup";
 
 class Register extends Component {
   constructor() {
@@ -66,28 +67,25 @@ class Register extends Component {
                   onChange={this.onChange}
                   error={errors.name}
                 />
-                <TextFieldGroup
+                <AuthFieldGroup
                   placeholder="Email"
                   name="email"
                   type="email"
-                  value={this.state.email}
                   onChange={this.onChange}
                   error={errors.email}
                   info="This site uses Gravatar so if you want a profile image, use a Gravatar email"
                 />
-                <TextFieldGroup
+                <AuthFieldGroup
                   placeholder="Password"
                   name="password"
                   type="password"
-                  value={this.state.password}
                   onChange={this.onChange}
                   error={errors.password}
                 />
-                <TextFieldGroup
+                <AuthFieldGroup
                   placeholder="Confirm Password"
                   name="password2"
                   type="password"
-                  value={this.state.password2}
                   onChange={this.onChange}
                   error={errors.password2}
                 />

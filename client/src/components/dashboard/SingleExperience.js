@@ -10,7 +10,7 @@ import {
   updateExperience,
   getCurrentProfile
 } from "../../actions/profileActions";
-import PropTypes from "prop-types";
+import propTypes from "prop-types";
 
 const Form = styled.form`
   margin-bottom: 1rem;
@@ -314,9 +314,9 @@ class SingleExperience extends Component {
 }
 
 SingleExperience.proptypes = {
-  updateExperience: PropTypes.func.isRequired,
-  experience: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
+  updateExperience: propTypes.func.isRequired,
+  experience: propTypes.object.isRequired,
+  errors: propTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({

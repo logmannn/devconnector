@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import propTypes from "prop-types";
 import { Link, withRouter } from "react-router-dom";
 import { deletePost, addLike, removeLike } from "../../actions/postActions";
 import ThumbsUp from "../../img/ThumbsUp";
@@ -163,11 +163,11 @@ class PostItem extends Component {
 }
 
 PostItem.propTypes = {
-  post: PropTypes.object.isRequired,
-  auth: PropTypes.object.isRequired,
-  deletePost: PropTypes.func.isRequired,
-  addLike: PropTypes.func.isRequired,
-  removeLike: PropTypes.func.isRequired
+  post: propTypes.object.isRequired,
+  auth: propTypes.object.isRequired,
+  deletePost: propTypes.func.isRequired,
+  addLike: propTypes.func.isRequired,
+  removeLike: propTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({

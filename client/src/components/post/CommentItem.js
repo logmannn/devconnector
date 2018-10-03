@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import propTypes from "prop-types";
 import { deleteComment } from "../../actions/postActions";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -57,10 +57,10 @@ class CommentItem extends Component {
 }
 
 CommentItem.propTypes = {
-  deleteComment: PropTypes.func.isRequired,
-  comment: PropTypes.object.isRequired,
-  postId: PropTypes.string.isRequired,
-  auth: PropTypes.object.isRequired
+  deleteComment: propTypes.func.isRequired,
+  comment: propTypes.object.isRequired,
+  postId: propTypes.string.isRequired,
+  auth: propTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
