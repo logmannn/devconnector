@@ -14,6 +14,7 @@ import {
 
 // Get current profile
 export const getCurrentProfile = () => dispatch => {
+  dispatch(clearErrors());
   dispatch(setProfileLoading());
   axios
     .get("/api/profile")
