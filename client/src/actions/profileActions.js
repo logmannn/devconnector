@@ -128,7 +128,6 @@ export const addExperience = (expData, history) => dispatch => {
 
 // Add education
 export const addEducation = (eduData, history) => dispatch => {
-  console.log(eduData);
   axios
     .post("/api/profile/education", eduData)
     .then(res => history.push("/dashboard"))
