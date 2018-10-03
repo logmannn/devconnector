@@ -1,6 +1,8 @@
 import axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
+import { getCurrentProfile } from "./profileActions";
+import store from "../store";
 
 import { GET_ERRORS, SET_CURRENT_USER } from "./types";
 
@@ -19,7 +21,6 @@ export const registerUser = (userData, history) => dispatch => {
 
 // Login - Get User Token
 export const loginUser = userData => dispatch => {
-  console.log(userData);
   axios
     .post("/api/users/login", userData)
     .then(res => {
@@ -43,20 +44,11 @@ export const loginUser = userData => dispatch => {
 };
 
 // Reset Password
-export const resetPassword = userData => dispatch => {
+export const resetPassword = resetData => dispatch => {
   axios
-    .post("/api/users/login", userData)
+    .post("/api/users/resetpassword", resetData)
     .then(res => {
-      // Save to localStorage
-      const { token } = res.data;
-      // Set token to localStorage
-      localStorage.setItem("jwtToken", token);
-      // Set token to Auth header
-      setAuthToken(token);
-      // Decode token to get user data
-      const decoded = jwt_decode(token);
-      // Set current user
-      dispatch(setCurrentUser(decoded));
+      store.dispatch(getCurrentProfile());
     })
     .catch(err =>
       dispatch({
