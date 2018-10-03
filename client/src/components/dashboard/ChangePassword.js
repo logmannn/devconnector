@@ -92,7 +92,6 @@ ChangePassword.propTypes = {
   resetPassword: propTypes.func.isRequired,
   profile: propTypes.object.isRequired,
   auth: propTypes.object.isRequired,
-  profile: propTypes.object.isRequired,
   errors: propTypes.object.isRequired
 };
 

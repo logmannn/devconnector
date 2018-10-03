@@ -3,7 +3,6 @@ import propTypes from "prop-types";
 import { connect } from "react-redux";
 import { loginUser } from "../../actions/authActions";
 import AuthFieldGroup from "../common/AuthFieldGroup";
-import classnames from "classnames";
 
 class Login extends Component {
   constructor() {
