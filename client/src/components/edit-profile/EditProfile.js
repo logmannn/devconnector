@@ -9,7 +9,7 @@ import SelectListGroup from "../common/SelectListGroup";
 import { createProfile } from "../../actions/profileActions";
 import isEmpty from "../../validation/is-empty";
 
-class CreateProfile extends Component {
+class EditProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -309,7 +309,7 @@ class CreateProfile extends Component {
   }
 }
 
-CreateProfile.propTypes = {
+EditProfile.propTypes = {
   createProfile: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
@@ -323,4 +323,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { createProfile }
-)(withRouter(CreateProfile));
+)(withRouter(EditProfile));
