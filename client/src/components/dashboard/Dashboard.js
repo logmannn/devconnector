@@ -7,6 +7,12 @@ import Spinner from "../common/Spinner";
 import ProfileActions from "./ProfileActions";
 import Experience from "./Experience";
 import Education from "./Education";
+import ChangePassword from "./ChangePassword";
+import styled from "styled-components";
+
+const Button = styled.button`
+  margin-top: 3rem;
+`;
 
 class Dashboard extends Component {
   componentDidMount() {
@@ -35,10 +41,10 @@ class Dashboard extends Component {
             <ProfileActions />
             <Experience experience={profile.experience} />
             <Education education={profile.education} />
-            <div style={{ marginBottom: "60px" }} />
-            <button onClick={this.onDeleteClick} className="btn btn-danger">
+            <ChangePassword />
+            <Button onClick={this.onDeleteClick} className="btn btn-danger">
               Delete My Account
-            </button>
+            </Button>
           </div>
         );
       } else {
